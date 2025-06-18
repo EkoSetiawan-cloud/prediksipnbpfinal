@@ -13,11 +13,11 @@ def convert_df_to_excel(df_dict):
 def generate_html_report(df_pred, df_eval):
     html = """
     <html><head><style>
-    body { font-family: Arial; margin: 40px; color: #000; }
-    h1, h2 { text-align: center; }
-    table { border-collapse: collapse; width: 100%; margin-bottom: 40px; }
-    th, td { border: 1px solid #000; padding: 8px; text-align: center; }
-    th { background-color: #f2f2f2; }
+    body {{ font-family: Arial; margin: 40px; color: #000; }}
+    h1, h2 {{ text-align: center; }}
+    table {{ border-collapse: collapse; width: 100%; margin-bottom: 40px; }}
+    th, td {{ border: 1px solid #000; padding: 8px; text-align: center; }}
+    th {{ background-color: #f2f2f2; }}
     </style></head><body>
     <h1>Laporan Prediksi PNBP Holt-Winters</h1>
     <h2>Data Prediksi</h2>
