@@ -22,8 +22,6 @@ def preprocessing_agregasi_page():
 
     # Pastikan kolom tahun dalam integer
     df_transposed["tahun"] = pd.to_numeric(df_transposed["tahun"], errors="coerce")
-
-    # Drop baris jika tahun tidak valid (NaN)
     df_transposed.dropna(subset=["tahun"], inplace=True)
     df_transposed["tahun"] = df_transposed["tahun"].astype(int)
 
@@ -36,8 +34,15 @@ def preprocessing_agregasi_page():
 
     df_total_per_tahun = df_transposed[["tahun", "total_pnbp"]]
 
-    st.subheader("📊 Agregasi Total PNBP per Tahun")
-    st.dataframe(df_total_per_tahun)
+    # Format ke Rupiah
+    def format_rupiah(x):
+        return f"Rp {x:,.0f}".replace(",", ".") if pd.notnull(x) else "-"
 
-    # Simpan untuk modul selanjutnya
+    df_display = df_total_per_tahun.copy()
+    df_display["total_pnbp"] = df_display["total_pnbp"].apply(format_rupiah)
+
+    st.subheader("📊 Agregasi Total PNBP per Tahun")
+    st.dataframe(df_display)
+
+    # Simpan data mentah (tanpa format) ke session_state
     st.session_state["pnbp_total_tahunan"] = df_total_per_tahun
