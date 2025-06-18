@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 
-def prediksi_double_smoothing_page():
+def prediksi_holt_winters_page():
     st.title("📈 Prediksi PNBP Holt-Winters")
 
     if "pnbp_total_tahunan" not in st.session_state:
