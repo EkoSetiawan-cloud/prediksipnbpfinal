@@ -19,7 +19,7 @@ menu = st.radio(
     index=0,
     key="main_radio"
 
-])
+]
 
 # Routing modul
 if menu == "1. Modul Input":
