@@ -5,7 +5,7 @@ from Modul_Upload_Dataset import upload_dataset_page
 from modul_preprocessing_agregasi import preprocessing_agregasi_page
 from Modul_Prediksi import prediksi_holt_winters_page
 from Modul_Visualisasi import visualisasi_prediksi_page
-from Modul_Evaluasi import evaluasi_model_page
+from Modul_Evaluasi import rediksi_pnbp_page
 
 # Konfigurasi halaman Streamlit
 st.set_page_config(page_title="Prediksi PNBP", layout="centered")
