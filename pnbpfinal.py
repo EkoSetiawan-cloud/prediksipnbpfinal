@@ -18,9 +18,7 @@ menu = st.radio(
     horizontal=False,
     index=0,
     key="main_radio"
-
-]
-
+) 
 # Routing modul
 if menu == "1. Modul Input":
     upload_dataset_page()
