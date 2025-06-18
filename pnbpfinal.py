@@ -8,16 +8,17 @@ from Modul_Visualisasi import visualisasi_prediksi_page
 from Modul_Evaluasi import evaluasi_model_page
 
 # Konfigurasi halaman Streamlit
-st.set_page_config(page_title="Prediksi PNBP", layout="wide")
+st.set_page_config(page_title="Prediksi PNBP", layout="centered")
 
-# Sidebar navigasi
-st.sidebar.title("📊 Navigasi Aplikasi")
-menu = st.sidebar.radio("Pilih Modul", [
-    "1. Modul Input",
-    "2. Preprocessing & Agregasi",
-    "3. Prediksi Holt-Winters",
-    "4. Visualisasi",
-    "5. Evaluasi"
+st.markdown("<h2 style='text-align: center;'>📊 Navigasi Aplikasi</h2>", unsafe_allow_html=True)
+
+menu = st.radio(
+    "Pilih Modul:",
+    ["1. Modul Input", "2. Preprocessing & Agregasi", "3. Prediksi Holt-Winters", "4. Visualisasi", "5. Evaluasi"],
+    horizontal=False,
+    index=0,
+    key="main_radio"
+
 ])
 
 # Routing modul
