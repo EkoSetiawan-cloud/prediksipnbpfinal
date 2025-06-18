@@ -8,7 +8,6 @@ def convert_df_to_excel(df_dict):
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
         for sheet_name, df in df_dict.items():
             df.to_excel(writer, index=False, sheet_name=sheet_name[:31])
-        writer.save()
     return output.getvalue()
 
 def generate_html_report(df_pred, df_eval):
