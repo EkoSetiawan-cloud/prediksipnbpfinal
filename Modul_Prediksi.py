@@ -17,7 +17,7 @@ def prediksi_holt_winters_page():
 
     tahun_min = df["tahun"].min()
     tahun_max = df["tahun"].max()
-    tahun_forecast = 3
+    tahun_forecast = 2
 
     series = df.set_index("tahun")["total_pnbp"]
 
