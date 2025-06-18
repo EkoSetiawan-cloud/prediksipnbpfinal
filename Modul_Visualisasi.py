@@ -9,9 +9,11 @@ def visualisasi_prediksi_page():
         st.warning("⚠️ Data prediksi belum tersedia. Jalankan Modul Prediksi terlebih dahulu.")
         return
 
-    # Ambil data dan normalisasi kolom
     df = st.session_state["prediksi_pnbp"].copy()
     df.columns = [col.lower().strip() for col in df.columns]
+
+    # Tentukan model yang digunakan (default: Double-Smoothing)
+    model_used = st.session_state.get("model_choice", "Double-Smoothing")
 
     # Validasi kolom
     required_cols = ['tahun', 'aktual', 'prediksi', 'jenis tahun']
@@ -19,7 +21,7 @@ def visualisasi_prediksi_page():
         st.error(f"❌ Dataset prediksi tidak lengkap. Harus punya kolom: {required_cols}")
         return
 
-    # Pastikan numerik
+    # Numerik dan urut
     df["aktual"] = pd.to_numeric(df["aktual"], errors="coerce")
     df["prediksi"] = pd.to_numeric(df["prediksi"], errors="coerce")
     df = df.sort_values("tahun")
@@ -27,7 +29,10 @@ def visualisasi_prediksi_page():
     df_hist = df[df["jenis tahun"] == "Historis"]
     df_all = df.copy()
 
-    st.subheader("📈 Grafik Prediksi Holt-Winters (Interaktif)")
+    # Judul prediksi dinamis
+    model_label = "Double Smoothing" if model_used == "Double-Smoothing" else "Prophet"
+
+    st.subheader(f"📈 Grafik Prediksi {model_label} (Interaktif)")
 
     fig = go.Figure()
 
@@ -46,14 +51,13 @@ def visualisasi_prediksi_page():
         x=df_all["tahun"],
         y=df_all["prediksi"],
         mode="lines+markers",
-        name="Prediksi Holt-Winters",
+        name=f"Prediksi {model_label}",
         line=dict(color="orange", dash="dash"),
         hovertemplate="Tahun: %{x}<br>Prediksi: Rp %{y:,.0f}<extra></extra>"
     ))
 
-    # Layout
     fig.update_layout(
-        title="Prediksi Total PNBP vs Data Aktual",
+        title=f"Prediksi Total PNBP vs Data Aktual ({model_label})",
         xaxis_title="Tahun",
         yaxis_title="Nominal PNBP (Rp)",
         hovermode="x unified",
