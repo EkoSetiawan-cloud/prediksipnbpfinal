@@ -1,6 +1,10 @@
 import streamlit as st
 
-# Impor semua modul halaman dengan nama file sesuai
+# Konfigurasi halaman Streamlit – WAJIB paling atas sebelum komponen lain
+st.set_page_config(page_title="Prediksi PNBP", layout="centered")
+
+# Impor semua modul halaman
+from login import login_page  
 from Modul_Upload_Dataset import upload_dataset_page
 from modul_preprocessing_agregasi import preprocessing_agregasi_page
 from Modul_Prediksi import prediksi_pnbp_page
@@ -8,9 +12,11 @@ from Modul_Visualisasi import visualisasi_prediksi_page
 from Modul_Evaluasi import evaluasi_model_page
 from Modul_Export import export_report_page
 
-# Konfigurasi halaman Streamlit
-st.set_page_config(page_title="Prediksi PNBP", layout="centered")
+# Jalankan Login
+if not login_page():
+    st.stop()
 
+# Navigasi Aplikasi
 st.markdown("<h2 style='text-align: center;'>📊 Navigasi Aplikasi</h2>", unsafe_allow_html=True)
 
 menu = st.radio(
