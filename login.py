@@ -9,7 +9,7 @@ users = {
 def login_page():
     st.markdown("""
         <div style="text-align:center">
-            <h1 style="color:#3C8DBC;">🔐 Selamat Datang di Aplikasi Prediksi PNBP DJID</h1>
+            <h1 style="color:#3C8DBC;">🔐 Selamat Datang di Aplikasi Prediksi PNBP DJID KOMDIGI</h1>
             <p style="font-size:16px; color:gray;">
                 Silakan login untuk mengakses fitur lengkap aplikasi. 
                 Login digunakan untuk memastikan keamanan dan personalisasi pengguna saat melakukan analisis prediktif.
