@@ -38,8 +38,7 @@ def login_page():
             st.error("❌ Username atau password salah. Silakan coba lagi.")
 
     # Jika sudah login
-    if st.session_state.get("logged_in"):
-        st.success(f"Anda sudah login sebagai **{st.session_state['username']}**.")
-        return True
+   if st.session_state.get("logged_in"):
+    st.success(f"Anda sudah login sebagai **{st.session_state['username']}**.")
+    st.stop()
 
-    return False
