@@ -4,10 +4,18 @@ import numpy as np
 from sklearn.metrics import mean_squared_error
 
 def evaluasi_model_page():
-    model_used = st.session_state.get("model_choice", "Double-Smoothing")
-    model_label = "Double Smoothing" if model_used == "Double-Smoothing" else "Prophet"
+    st.title("\U0001F4CF Evaluasi Model Prediksi - Double Smoothing")
 
-    st.title(f"📏 Evaluasi Model Prediksi - {model_label}")
+    st.markdown("""
+    Modul ini digunakan untuk mengevaluasi akurasi hasil prediksi model **Double Exponential Smoothing** dibandingkan dengan data aktual. 
+
+    Evaluasi dilakukan menggunakan metrik berikut:
+    - **MAE (Mean Absolute Error)**: rata-rata selisih absolut antara prediksi dan aktual.
+    - **MAPE (Mean Absolute Percentage Error)**: error relatif dalam persentase.
+    - **RMSE (Root Mean Square Error)**: akar dari rata-rata kuadrat error, sensitif terhadap outlier.
+
+    Setiap baris data dievaluasi, dan hasil ringkasan global disediakan di bagian akhir.
+    """)
 
     if "prediksi_pnbp" not in st.session_state:
         st.warning("⚠️ Data prediksi belum tersedia. Jalankan Modul Prediksi terlebih dahulu.")
@@ -74,28 +82,24 @@ def evaluasi_model_page():
     df_tampil["Error Absolut"] = df_tampil["error_absolut"].apply(format_rupiah)
     df_tampil["Error Persentase (%)"] = df_tampil["error_persen"].apply(format_persen)
 
-    # RMSE per baris
     df_pred["rmse"] = np.sqrt((df_pred["aktual"] - df_pred["prediksi"]) ** 2)
     df_tampil["RMSE"] = df_pred["rmse"].apply(format_rupiah)
-
-    # Tambah MAE, MAPE dan Validasi
     df_tampil["MAE"] = df_pred["error_absolut"].apply(format_rupiah)
     df_tampil["MAPE"] = df_pred["error_persen"].apply(format_persen)
     df_tampil["Validasi"] = df_pred["validasi"]
 
-    # Tabel Error
-    st.subheader(f"📄 Tabel Evaluasi Error (Aktual vs Prediksi) - {model_label}")
+    st.subheader("📄 Tabel Evaluasi Error per Tahun")
+    st.caption("Menampilkan error absolut dan persentase antara prediksi dan data aktual.")
     st.dataframe(df_tampil[["tahun", "Aktual", "Prediksi", "Error Absolut", "Error Persentase (%)"]], use_container_width=True)
-    
-    # Tabel Performa
-    st.subheader("📊 Tabel Evaluasi Performa Model")
-    st.dataframe(df_tampil[[
-        "tahun", "Aktual", "Prediksi", "MAE", "MAPE", "RMSE", "Validasi"
-    ]], use_container_width=True)
 
-    # Ringkasan Global
+    st.subheader("📊 Tabel Evaluasi Performa Model")
+    st.caption("Tabel ini menunjukkan performa model prediksi dalam bentuk MAE, MAPE, RMSE, dan validasi akurasi.")
+    st.dataframe(df_tampil[["tahun", "Aktual", "Prediksi", "MAE", "MAPE", "RMSE", "Validasi"]], use_container_width=True)
+
     st.subheader("📈 Ringkasan Skor Evaluasi Global")
-    st.markdown(f"- **Model**: `{model_label}`")
+    st.markdown(f"- **Model**: `Double Smoothing`")
     st.markdown(f"- **MAE**: `{format_rupiah(df_hist['error_absolut'].mean())}`")
     st.markdown(f"- **MAPE**: `{df_hist['error_persen'].mean():.2f}%`")
     st.markdown(f"- **RMSE**: `{format_rupiah(rmse_global)}`")
+
+    st.info("ℹ️ Validasi model berdasarkan MAPE: ≤10% = Sangat Akurat, ≤20% = Akurat, ≤50% = Cukup Akurat, >50% = Tidak Akurat.")
