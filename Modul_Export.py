@@ -6,6 +6,7 @@ import zipfile
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import tempfile
+import streamlit.components.v1 as components
 
 def convert_df_to_excel(df_dict):
     output = io.BytesIO()
@@ -93,11 +94,17 @@ def export_report_page():
     """, unsafe_allow_html=True)
 
     if st.button("🖨️ Mode Cetak PDF Bersih"):
-        st.markdown("""
+    components.html(
+        """
         <script>
+        window.onload = function() {
             window.print();
+        }
         </script>
-        """, unsafe_allow_html=True)
+        """,
+        height=0,
+        width=0
+    )
 
     if not all(key in st.session_state for key in ["dataset_pnbp", "pnbp_total_tahunan", "prediksi_pnbp"]):
         st.warning("⚠️ Dataset belum lengkap. Jalankan semua modul terlebih dahulu.")
