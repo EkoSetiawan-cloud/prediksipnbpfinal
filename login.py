@@ -8,7 +8,7 @@ users = {
 
 def login_page():
     if not st.session_state.get("logged_in"):
-        st.markdown("<h1 style='color:#80080;'>🔐 Selamat Datang di Aplikasi Prediksi PNBP DJID KOMDIGI</h1>", unsafe_allow_html=True)
+        st.markdown("<h1 style='color:#800080;'>🔐 Selamat Datang di Aplikasi Prediksi PNBP DJID KOMDIGI</h1>", unsafe_allow_html=True)
         st.markdown("Silakan login untuk mengakses fitur lengkap aplikasi. Login digunakan untuk memastikan keamanan dan personalisasi pengguna saat melakukan analisis prediktif.")
 
         st.markdown("""
