@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.metrics import mean_squared_error
 
 def evaluasi_model_page():
-    st.title("\U0001F4CF Evaluasi Model Prediksi - Double Smoothing")
+    st.markdown("<h1 style='color:#3C8DBC;'>📏 Evaluasi Model Prediksi - Double Smoothing</h1>", unsafe_allow_html=True)
 
     st.markdown("""
     Modul ini digunakan untuk mengevaluasi akurasi hasil prediksi model **Double Exponential Smoothing** dibandingkan dengan data aktual. 
