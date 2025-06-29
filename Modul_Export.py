@@ -17,7 +17,7 @@ def convert_df_to_excel(df_dict):
     return output.getvalue()
 
 def export_report_page():
-    st.title("📥 Export & Report Generator")
+    st.markdown("<h1 style='color:#3C8DBC;'>📥 Export & Report Generator</h1>", unsafe_allow_html=True)
 
     if not all(key in st.session_state for key in ["dataset_pnbp", "pnbp_total_tahunan", "prediksi_pnbp"]):
         st.warning("⚠️ Dataset belum lengkap. Jalankan semua modul terlebih dahulu.")
