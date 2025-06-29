@@ -13,8 +13,7 @@ def login_page():
     """)
 
     if st.session_state.get("logged_in"):
-        st.success(f"Anda sudah login sebagai **{st.session_state['username']}**.")
-        st.stop()
+        return True
 
     st.subheader("🔑 Masuk ke Akun Anda")
     username = st.text_input("👤 Username")
