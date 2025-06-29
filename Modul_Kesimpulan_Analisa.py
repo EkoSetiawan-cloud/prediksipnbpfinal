@@ -1,4 +1,4 @@
-imimport streamlit as st
+import streamlit as st
 
 def kesimpulan_analisa_page():
     st.title("📋 Kesimpulan & Analisa Prediksi PNBP")
