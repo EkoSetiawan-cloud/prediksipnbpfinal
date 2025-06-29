@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.graph_objects as go
 
 def visualisasi_prediksi_page():
-    st.title("\U0001F4C9 Visualisasi Interaktif Prediksi vs Aktual PNBP")
+    st.markdown("<h1 style='color:#3C8DBC;'>📉 Visualisasi Interaktif Prediksi vs Aktual PNBP</h1>", unsafe_allow_html=True)
 
     st.markdown("""
     Modul ini menyajikan grafik interaktif untuk membandingkan hasil prediksi model **Double Exponential Smoothing** dengan data aktual. 
