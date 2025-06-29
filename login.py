@@ -25,7 +25,7 @@ def login_page():
             st.session_state["logged_in"] = True
             st.session_state["username"] = username
             st.success(f"Login berhasil. Selamat datang, {username}!")
-            st.experimental_rerun()
+            st.rerun()
         else:
             st.error("❌ Username atau password salah. Silakan coba lagi.")
 
