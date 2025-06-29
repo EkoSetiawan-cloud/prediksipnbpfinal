@@ -59,27 +59,4 @@ def export_report_page():
     )
 
     st.markdown("---")
-    st.subheader("📈 Grafik Prediksi Double Smoothing (Interaktif)")
-    st.markdown("🖼️ Unduh Grafik Prediksi dalam format PNG, PDF, atau SVG.")
-
-    images = export_graphs_as_images(df_prediksi)
-
-    for fmt, buf in images.items():
-        st.download_button(
-            label=f"⬇️ Download Grafik ({fmt.upper()})",
-            data=buf,
-            file_name=f"Grafik_Prediksi_PNBP.{fmt}",
-            mime=f"image/{'svg+xml' if fmt=='svg' else fmt}"
-        )
-
-    st.markdown("---")
-    st.subheader("📦 Unduh Semua File Sekaligus (ZIP)")
-
-    zip_data = generate_zip_file(excel_data, images)
-
-    st.download_button(
-        label="⬇️ Export ZIP Semua File",
-        data=zip_data,
-        file_name="Semua_Laporan_PNBP.zip",
-        mime="application/zip"
-    )
+    
