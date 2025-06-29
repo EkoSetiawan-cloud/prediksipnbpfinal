@@ -14,7 +14,7 @@ def login_page():
 
     st.markdown("""
         ### 🎯 Fokus Penelitian
-        Penelitian ini berfokus menjawab pertanyaan spesifik sebagai berikut:
+        Penelitian ini berfokus menjawab pertanyaan spesifik sebagai berikut:<br>
         a. **Q1:** Bagaimana tren historis BHP PNBP pada layanan-layanan Ditjen Infradig selama periode 2014–2024?<br>
         b. **Q2:** Bagaimana membangun model prediksi BHP PNBP berbasis time series menggunakan metode exponential smoothing yang mampu menangkap pola historis secara akurat?<br>
         c. **Q3:** Seberapa akurat model yang dikembangkan jika dievaluasi dengan MAE, MAPE, dan RMSE?<br>
