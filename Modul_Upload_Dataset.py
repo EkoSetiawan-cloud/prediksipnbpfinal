@@ -5,7 +5,7 @@ def upload_dataset_page():
     st.markdown("""
         <h1 style="color:#3C8DBC;">📂 Upload Dataset PNBP</h1>
         <p style="font-size:16px; color:gray;">
-            Silakan upload file Excel (<code>.xlsx</code>) yang berisi <strong>data historis PNBP tahun 2014–2024</strong>. 
+            Silakan upload file Excel (<code>.xlsx</code>) yang berisi <strong>data historis PNBP Ditjen Infrastruktur Digital - Komdigi</strong>. 
             Dataset ini akan digunakan untuk proses <em>preprocessing, prediksi, evaluasi</em>, dan <em>visualisasi</em>.
         </p>
         <ul style="font-size:15px; color:#555;">
