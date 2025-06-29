@@ -27,11 +27,10 @@ def export_graphs_as_images(df_pred):
     pred = df_pred[df_pred["Jenis Tahun"] == "Prediksi"]
 
     scale = 1e12  # Triliun
-    ax.plot(hist["Tahun"], hist["Aktual"] / scale, marker="o", label="Aktual", linewidth=2)
-    ax.plot(hist["Tahun"], hist["Prediksi"] / scale, marker="o", linestyle="--", label="Prediksi (Historis)", linewidth=2)
-    ax.plot(pred["Tahun"], pred["Prediksi"] / scale, marker="s", linestyle="--", label="Prediksi (Masa Depan)", linewidth=2)
+    ax.plot(hist["Tahun"], hist["Aktual"] / scale, color="blue", marker="o", label="Aktual (Histori)", linewidth=2)
+    ax.plot(df_pred["Tahun"], df_pred["Prediksi"] / scale, color="orange", linestyle="--", marker="o", label="Prediksi (Double Smoothing)", linewidth=2)
 
-    ax.set_title("Grafik Prediksi PNBP")
+    ax.set_title("Prediksi Total PNBP vs Data Aktual (Double Smoothing)")
     ax.set_xlabel("Tahun")
     ax.set_ylabel("Nominal PNBP (Rp Triliun)")
     ax.grid(True)
