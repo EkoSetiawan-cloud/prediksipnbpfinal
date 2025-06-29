@@ -10,7 +10,7 @@ from modul_preprocessing_agregasi import preprocessing_agregasi_page
 from Modul_Prediksi import prediksi_pnbp_page
 from Modul_Visualisasi import visualisasi_prediksi_page
 from Modul_Evaluasi import evaluasi_model_page
-from Modul_Analisa import kesimpulan_analisa_page
+from modul_analisa_final import kesimpulan_analisa_page
 from Modul_Export import export_report_page
 
 # Jalankan Login
@@ -18,7 +18,7 @@ if not login_page():
     st.stop()
 
 # Navigasi Aplikasi
-st.sidebar.title("📊 Aplikasi Prediksi PNBP DJID")
+st.sidebar.title("\U0001F4CA Aplikasi Prediksi PNBP DJID")
 menu = st.sidebar.radio("Pilih Modul", [
         "1. Modul Input",
         "2. Preprocessing & Agregasi",
@@ -33,23 +33,16 @@ menu = st.sidebar.radio("Pilih Modul", [
 
 # Routing ke modul
 if menu == "1. Modul Input":
-    from Modul_Upload_Dataset import upload_dataset_page
     upload_dataset_page()
 elif menu == "2. Preprocessing & Agregasi":
-    from modul_preprocessing_agregasi import preprocessing_agregasi_page
     preprocessing_agregasi_page()
 elif menu == "3. Prediksi Model":
-    from Modul_Prediksi import prediksi_pnbp_page
     prediksi_pnbp_page()
 elif menu == "4. Visualisasi":
-    from Modul_Visualisasi import visualisasi_prediksi_page
     visualisasi_prediksi_page()
 elif menu == "5. Evaluasi":
-    from Modul_Evaluasi import evaluasi_model_page
     evaluasi_model_page()
 elif menu == "6. Kesimpulan & Analisa":
-    from Modul_Analisa import kesimpulan_analisa_page
     kesimpulan_analisa_page()
 elif menu == "7. Export & Report Generator":
-    from Modul_Export import export_report_page
     export_report_page()
