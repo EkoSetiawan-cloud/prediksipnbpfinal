@@ -17,7 +17,7 @@ if not login_page():
     st.stop()
 
 # Navigasi Aplikasi
-st.sidebar.title("📊 Navigasi Aplikasi")
+st.sidebar.title("📊 Aplikasi Prediksi PNBP DJID")
 menu = st.sidebar.radio("Pilih Modul", [
         "1. Modul Input",
         "2. Preprocessing & Agregasi",
