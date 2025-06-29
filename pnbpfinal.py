@@ -10,7 +10,7 @@ from modul_preprocessing_agregasi import preprocessing_agregasi_page
 from Modul_Prediksi import prediksi_pnbp_page
 from Modul_Visualisasi import visualisasi_prediksi_page
 from Modul_Evaluasi import evaluasi_model_page
-from Modul_Kesimpulan_&_Analisa import kesimpulan_analisa_page
+from Modul_Kesimpulan_Analisa import kesimpulan_analisa_page
 from Modul_Export import export_report_page
 
 # Jalankan Login
