@@ -20,7 +20,7 @@ def prediksi_pnbp_page():
     forecast_years = list(range(tahun_max + 1, tahun_max + tahun_forecast + 1))
 
     st.subheader("\U0001F9E0 Metode Prediksi yang Digunakan")
-    st.markdown("""
+    st.markdown(r"""
     Aplikasi ini menggunakan metode **Double Exponential Smoothing (Holt’s Method)** untuk memprediksi total PNBP tahunan.
 
     ### 🧠 Alasan Pemilihan
@@ -35,13 +35,13 @@ def prediksi_pnbp_page():
     - **Trend (T_t)**: estimasi arah perubahan
 
     Rumus:
-    $$
+    \[
     \begin{aligned}
     L_t &= \alpha y_t + (1 - \alpha)(L_{t-1} + T_{t-1}) \\
     T_t &= \beta (L_t - L_{t-1}) + (1 - \beta) T_{t-1} \\
     \hat{y}_{t+m} &= L_t + m \cdot T_t
     \end{aligned}
-    $$
+    \]
 
     ### ✅ Keunggulan
     - Cepat dan efisien
