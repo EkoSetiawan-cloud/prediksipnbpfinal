@@ -2,7 +2,15 @@ import streamlit as st
 import pandas as pd
 
 def preprocessing_agregasi_page():
-    st.title("🔧 Preprocessing & Agregasi Data PNBP")
+    st.markdown("""
+        <h1 style="color:#3C8DBC;">🔧 Preprocessing & Agregasi Data PNBP</h1>
+        <p style="font-size:16px; color:gray;">
+            Proses ini bertujuan untuk mengubah format data mentah menjadi bentuk agregat tahunan 
+            agar dapat digunakan pada proses prediksi. Data akan di-transpose, dibersihkan, dan dijumlahkan
+            berdasarkan <strong>total PNBP per tahun</strong>.
+        </p>
+        <hr style="margin-top:20px; margin-bottom:20px;">
+    """, unsafe_allow_html=True)
 
     if "dataset_pnbp" not in st.session_state:
         st.warning("⚠️ Dataset belum tersedia. Silakan upload terlebih dahulu melalui Modul Input.")
@@ -11,30 +19,27 @@ def preprocessing_agregasi_page():
     df_raw = st.session_state["dataset_pnbp"].copy()
 
     st.subheader("📄 Dataset Asli (Tampilan Awal)")
-    st.dataframe(df_raw)
+    st.caption("Data mentah sebelum diubah ke format prediksi.")
+    st.dataframe(df_raw, use_container_width=True)
 
-    # Transpose data: kolom menjadi baris, baris menjadi kolom
+    # Transpose data
     df_transposed = df_raw.set_index(df_raw.columns[0]).transpose()
-
-    # Reset index agar tahun jadi kolom
     df_transposed.reset_index(inplace=True)
     df_transposed.rename(columns={"index": "tahun"}, inplace=True)
-
-    # Pastikan kolom tahun dalam integer
     df_transposed["tahun"] = pd.to_numeric(df_transposed["tahun"], errors="coerce")
     df_transposed.dropna(subset=["tahun"], inplace=True)
     df_transposed["tahun"] = df_transposed["tahun"].astype(int)
 
-    st.subheader("📌 Data Setelah Transpose")
-    st.dataframe(df_transposed)
+    st.subheader("🔁 Data Setelah Transpose")
+    st.caption("Baris menjadi kolom dan kolom menjadi baris, dengan 'tahun' sebagai index.")
+    st.dataframe(df_transposed, use_container_width=True)
 
-    # Hitung total PNBP dari seluruh jenis
+    # Agregasi total PNBP
     nominal_cols = [col for col in df_transposed.columns if col != "tahun"]
     df_transposed["total_pnbp"] = df_transposed[nominal_cols].sum(axis=1)
-
     df_total_per_tahun = df_transposed[["tahun", "total_pnbp"]]
 
-    # Format ke Rupiah
+    # Format rupiah
     def format_rupiah(x):
         return f"Rp {x:,.0f}".replace(",", ".") if pd.notnull(x) else "-"
 
@@ -42,7 +47,8 @@ def preprocessing_agregasi_page():
     df_display["total_pnbp"] = df_display["total_pnbp"].apply(format_rupiah)
 
     st.subheader("📊 Agregasi Total PNBP per Tahun")
-    st.dataframe(df_display)
+    st.caption("Total kumulatif dari semua jenis PNBP untuk setiap tahun.")
+    st.dataframe(df_display, use_container_width=True)
 
-    # Simpan data mentah (tanpa format) ke session_state
+    st.info("✅ Data berhasil diproses dan siap digunakan untuk proses prediksi.")
     st.session_state["pnbp_total_tahunan"] = df_total_per_tahun
