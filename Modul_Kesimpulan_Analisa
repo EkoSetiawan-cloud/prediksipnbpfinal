@@ -1,13 +1,20 @@
+from pathlib import Path
+
+# Path tujuan penyimpanan file
+filepath = Path("/mnt/data/Modul_Kesimpulan_Analisa.py")
+
+# Isi kode modul kesimpulan analisa
+modul_content = '''
 import streamlit as st
 
 def kesimpulan_analisa_page():
-    st.title("\U0001F4CB Kesimpulan & Analisa Prediksi PNBP")
+    st.title("📋 Kesimpulan & Analisa Prediksi PNBP")
 
-    st.markdown("""
+    st.markdown(\"\"\"
     Modul ini menyajikan **analisa akademik mendalam** terhadap performa model prediksi Double Exponential Smoothing yang digunakan untuk memperkirakan Pendapatan Negara Bukan Pajak (PNBP) berdasarkan data historis.
 
     ---
-    
+
     ### 🎯 Tujuan Analisis
     Evaluasi model prediksi bertujuan untuk:
     - Menilai seberapa dekat nilai prediksi terhadap nilai aktual
@@ -15,7 +22,7 @@ def kesimpulan_analisa_page():
     - Memberikan dasar argumentatif dalam pengambilan keputusan prediktif berbasis data
 
     ---
-    
+
     ### 📈 Hasil Evaluasi Model
     Berdasarkan hasil perhitungan menggunakan tiga metrik utama:
 
@@ -33,7 +40,7 @@ def kesimpulan_analisa_page():
     | > 50     | Tidak Akurat           |
 
     ---
-    
+
     ### 📊 Interpretasi Akademik
     Secara umum, hasil evaluasi menunjukkan bahwa model **Double Exponential Smoothing** mampu memetakan pola tren linier historis secara baik. Nilai MAE dan RMSE yang relatif rendah mengindikasikan bahwa model cukup sensitif terhadap pola tahunan tanpa menghasilkan prediksi yang ekstrem.
 
@@ -51,4 +58,9 @@ def kesimpulan_analisa_page():
     - Hasil evaluasi menunjukkan klasifikasi "Sangat Akurat" berdasarkan MAPE
 
     Oleh karena itu, model ini dapat direkomendasikan sebagai alat bantu proyeksi kebijakan berbasis data historis PNBP secara efisien dan terpercaya.
-    """)
+    \"\"\")
+'''
+
+# Simpan file
+filepath.write_text(modul_content)
+filepath.name
