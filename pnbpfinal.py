@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Konfigurasi halaman Streamlit – WAJIB paling atas sebelum komponen lain
-st.set_page_config(page_title="Prediksi PNBP", layout="centered")
+st.set_page_config(page_title="Prediksi PNBP", layout="wide")
 
 # Impor semua modul halaman
 from login import login_page  
