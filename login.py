@@ -7,10 +7,10 @@ users = {
 }
 
 def login_page():
-    st.title("🔐 Selamat Datang di Aplikasi Prediksi PNBP DJID KOMDIGI")
-    st.markdown("Silakan login untuk mengakses fitur lengkap aplikasi. Login digunakan untuk memastikan keamanan dan personalisasi pengguna saat melakukan analisis prediktif.")
-
     if not st.session_state.get("logged_in"):
+        st.title("🔐 Selamat Datang di Aplikasi Prediksi PNBP DJID KOMDIGI")
+        st.markdown("Silakan login untuk mengakses fitur lengkap aplikasi. Login digunakan untuk memastikan keamanan dan personalisasi pengguna saat melakukan analisis prediktif.")
+
         st.markdown("""
             ### 🎯 Fokus Penelitian
             Penelitian ini berfokus menjawab pertanyaan spesifik sebagai berikut:<br>
