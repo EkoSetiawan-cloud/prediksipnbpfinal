@@ -70,6 +70,35 @@ def generate_zip_file(excel_data, images):
 def export_report_page():
     st.title("\U0001F4E5 Export & Report Generator")
 
+    st.markdown("""
+    <style>
+    @media print {
+        .main, .block-container {
+            padding: 0;
+            margin: 0;
+            zoom: 80%;
+        }
+        table {
+            width: 100% !important;
+            font-size: 11px !important;
+            word-wrap: break-word !important;
+            table-layout: fixed !important;
+        }
+        th, td {
+            word-wrap: break-word !important;
+            white-space: normal !important;
+        }
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    if st.button("🖨️ Mode Cetak PDF Bersih"):
+        st.markdown("""
+        <script>
+            window.print();
+        </script>
+        """, unsafe_allow_html=True)
+
     if not all(key in st.session_state for key in ["dataset_pnbp", "pnbp_total_tahunan", "prediksi_pnbp"]):
         st.warning("⚠️ Dataset belum lengkap. Jalankan semua modul terlebih dahulu.")
         return
