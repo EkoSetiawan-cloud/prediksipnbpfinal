@@ -81,7 +81,7 @@ def prediksi_pnbp_page():
     df_display["Aktual"] = df_display["Aktual"].apply(format_rupiah)
     df_display["Prediksi"] = df_display["Prediksi"].apply(format_rupiah)
 
-    st.subheader("📄 Hasil Prediksi")
+    st.subheader("📄 Tabel Hasil Prediksi")
     st.caption("Tabel berikut menampilkan nilai aktual dan hasil proyeksi untuk dua tahun ke depan.")
     st.dataframe(df_display, use_container_width=True)
 
