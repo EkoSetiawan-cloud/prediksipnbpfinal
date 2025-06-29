@@ -4,8 +4,9 @@ from statsmodels.tsa.holtwinters import ExponentialSmoothing
 import numpy as np
 
 def prediksi_pnbp_page():
-    st.title("\U0001F4C8 Prediksi Total PNBP Tahunan")
-
+    st.markdown("""
+        <h1 style="color:#3C8DBC;">🔧 Prediksi Total PNBP Tahunan</h1>
+     
     if "pnbp_total_tahunan" not in st.session_state:
         st.warning("⚠️ Data agregasi belum tersedia. Jalankan preprocessing terlebih dahulu.")
         return
