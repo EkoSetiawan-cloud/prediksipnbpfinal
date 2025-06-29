@@ -5,6 +5,14 @@ import plotly.graph_objects as go
 def visualisasi_prediksi_page():
     st.title("\U0001F4C9 Visualisasi Interaktif Prediksi vs Aktual PNBP")
 
+    st.markdown("""
+    Modul ini menyajikan grafik interaktif untuk membandingkan hasil prediksi model **Double Exponential Smoothing** dengan data aktual. 
+
+    Visualisasi ini bertujuan membantu pengguna memahami apakah tren prediksi mengikuti pola historis, serta mengidentifikasi potensi deviasi dari proyeksi. 
+
+    Garis biru menunjukkan data aktual (historis), sementara garis oranye putus-putus menunjukkan hasil prediksi dari model. 
+    """)
+
     if "prediksi_pnbp" not in st.session_state:
         st.warning("⚠️ Data prediksi belum tersedia. Jalankan Modul Prediksi terlebih dahulu.")
         return
@@ -58,4 +66,4 @@ def visualisasi_prediksi_page():
     )
 
     st.plotly_chart(fig, use_container_width=True)
-    st.info("ℹ️ Grafik ini membantu memahami bagaimana hasil prediksi mengikuti pola tren historis data PNBP.")
+    st.info("ℹ️ Gunakan grafik ini untuk menjelaskan sejauh mana model mengikuti pola aktual, dan untuk mendukung validasi hasil evaluasi prediksi.")
