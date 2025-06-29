@@ -1,7 +1,7 @@
 import streamlit as st
 
 def kesimpulan_analisa_page():
-    st.title("📋 Kesimpulan & Analisa Prediksi PNBP")
+    st.markdown("<h1 style='color:#3C8DBC;'>📋 Kesimpulan & Analisa Prediksi PNBP</h1>", unsafe_allow_html=True)
 
     st.markdown("### 🎯 Tujuan Analisis")
     st.markdown(
