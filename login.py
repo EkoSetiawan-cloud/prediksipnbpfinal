@@ -12,6 +12,15 @@ def login_page():
         Silakan login untuk mengakses fitur lengkap aplikasi. Login digunakan untuk memastikan keamanan dan personalisasi pengguna saat melakukan analisis prediktif.
     """)
 
+    st.markdown("""
+        ### 🎯 Fokus Penelitian
+        Penelitian ini berfokus menjawab pertanyaan spesifik sebagai berikut:
+        a. **Q1:** Bagaimana tren historis BHP PNBP pada layanan-layanan Ditjen Infradig selama periode 2014–2024?<br>
+        b. **Q2:** Bagaimana membangun model prediksi BHP PNBP berbasis time series menggunakan metode exponential smoothing yang mampu menangkap pola historis secara akurat?<br>
+        c. **Q3:** Seberapa akurat model yang dikembangkan jika dievaluasi dengan MAE, MAPE, dan RMSE?<br>
+        d. **Q4:** Bagaimana strategi pemanfaatan hasil prediksi dalam mendukung kebijakan dan perencanaan Ditjen Infradig?
+    """, unsafe_allow_html=True)
+
     if st.session_state.get("logged_in"):
         return True
 
