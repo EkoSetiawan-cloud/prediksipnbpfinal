@@ -16,24 +16,6 @@ def convert_df_to_excel(df_dict):
             df.to_excel(writer, index=False, sheet_name=sheet_name[:31])
     return output.getvalue()
 
-import streamlit as st
-import pandas as pd
-import io
-import os
-import zipfile
-import matplotlib.pyplot as plt
-import matplotlib.ticker as mtick
-import matplotlib.font_manager as fm
-import tempfile
-
-
-def convert_df_to_excel(df_dict):
-    output = io.BytesIO()
-    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-        for sheet_name, df in df_dict.items():
-            df.to_excel(writer, index=False, sheet_name=sheet_name[:31])
-    return output.getvalue()
-
 def export_graphs_as_images(df_pred):
     output_files = {}
     df_pred = df_pred.copy()
@@ -51,7 +33,8 @@ def export_graphs_as_images(df_pred):
     plt.rc('font', **font)
 
     ax.plot(hist["Tahun"], hist["Aktual"] / scale, color="#1f77b4", marker="o", label="Aktual (Histori)", linewidth=2)
-    ax.plot(df_pred["Tahun"], df_pred["Prediksi"] / scale, color="#ff7f0e", linestyle="--", marker="o", label="Prediksi (Double Smoothing)", linewidth=2)
+    ax.plot(hist["Tahun"], hist["Prediksi"] / scale, color="#ff7f0e", linestyle="--", marker="o", label="Prediksi (Historis)", linewidth=2)
+    ax.plot(pred["Tahun"], pred["Prediksi"] / scale, color="#2ca02c", linestyle="--", marker="s", label="Prediksi (Masa Depan)", linewidth=2)
 
     ax.set_title("Prediksi Total PNBP vs Data Aktual (Double Smoothing)", fontsize=12, fontweight='bold')
     ax.set_xlabel("Tahun", fontsize=11)
