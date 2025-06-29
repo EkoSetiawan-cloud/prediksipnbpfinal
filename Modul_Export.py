@@ -26,15 +26,16 @@ def export_graphs_as_images(df_pred):
 
     fig, ax = plt.subplots(figsize=(10, 5))
     hist = df_pred[df_pred["Jenis Tahun"] == "Historis"]
-    pred = df_pred[df_pred["Jenis Tahun"] == "Prediksi"]
 
     scale = 1e12  # Triliun
     font = {'family': 'sans-serif', 'weight': 'normal', 'size': 10}
     plt.rc('font', **font)
 
+    # Grafik aktual historis
     ax.plot(hist["Tahun"], hist["Aktual"] / scale, color="#1f77b4", marker="o", label="Aktual (Histori)", linewidth=2)
-    ax.plot(hist["Tahun"], hist["Prediksi"] / scale, color="#ff7f0e", linestyle="--", marker="o", label="Prediksi (Historis)", linewidth=2)
-    ax.plot(pred["Tahun"], pred["Prediksi"] / scale, color="#2ca02c", linestyle="--", marker="s", label="Prediksi (Masa Depan)", linewidth=2)
+
+    # Grafik prediksi keseluruhan (2014–2026)
+    ax.plot(df_pred["Tahun"], df_pred["Prediksi"] / scale, color="#ff7f0e", linestyle="--", marker="o", label="Prediksi (Double Smoothing)", linewidth=2)
 
     ax.set_title("Prediksi Total PNBP vs Data Aktual (Double Smoothing)", fontsize=12, fontweight='bold')
     ax.set_xlabel("Tahun", fontsize=11)
