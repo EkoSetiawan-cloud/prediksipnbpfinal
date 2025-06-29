@@ -16,66 +16,6 @@ def convert_df_to_excel(df_dict):
             df.to_excel(writer, index=False, sheet_name=sheet_name[:31])
     return output.getvalue()
 
-def export_graphs_as_images(df_pred):
-    output_files = {}
-    df_pred = df_pred.copy()
-    df_pred = df_pred.sort_values("Tahun")
-
-    df_pred["Aktual"] = pd.to_numeric(df_pred["Aktual"].astype(str).str.replace("Rp", "").str.replace(".", "").str.replace(",", "."), errors="coerce")
-    df_pred["Prediksi"] = pd.to_numeric(df_pred["Prediksi"].astype(str).str.replace("Rp", "").str.replace(".", "").str.replace(",", "."), errors="coerce")
-
-    fig, ax = plt.subplots(figsize=(10, 5))
-    hist = df_pred[df_pred["Jenis Tahun"] == "Historis"]
-
-    scale = 1e12  # Triliun
-    font = {'family': 'sans-serif', 'weight': 'normal', 'size': 10}
-    plt.rc('font', **font)
-
-    # Grafik aktual historis
-    ax.plot(hist["Tahun"], hist["Aktual"] / scale, color="#1f77b4", marker="o", label="Aktual (Histori)", linewidth=2)
-
-    # Grafik prediksi keseluruhan (2014–2026)
-    ax.plot(df_pred["Tahun"], df_pred["Prediksi"] / scale, color="#ff7f0e", linestyle="--", marker="o", label="Prediksi (Double Smoothing)", linewidth=2)
-
-    ax.set_title("Prediksi Total PNBP vs Data Aktual (Double Smoothing)", fontsize=12, fontweight='bold')
-    ax.set_xlabel("Tahun", fontsize=11)
-    ax.set_ylabel("Nominal PNBP (Rp Triliun)", fontsize=11)
-    ax.grid(True, linestyle=':', linewidth=0.7, alpha=0.7)
-    ax.legend(frameon=False, fontsize=10)
-    ax.yaxis.set_major_formatter(mtick.FormatStrFormatter('%.0f T'))
-
-    plt.tight_layout()
-
-    for fmt in ["png", "pdf", "svg"]:
-        buf = io.BytesIO()
-        fig.savefig(buf, format=fmt, dpi=300)
-        buf.seek(0)
-        output_files[fmt] = buf
-
-    plt.close(fig)
-    return output_files
-
-def generate_zip_file(excel_data, images):
-    with tempfile.TemporaryDirectory() as tmpdir:
-        excel_path = os.path.join(tmpdir, "Laporan_Prediksi_PNBP.xlsx")
-        with open(excel_path, "wb") as f:
-            f.write(excel_data)
-
-        for fmt, buf in images.items():
-            img_path = os.path.join(tmpdir, f"Grafik_Prediksi_PNBP.{fmt}")
-            with open(img_path, "wb") as f:
-                f.write(buf.read())
-
-        zip_path = os.path.join(tmpdir, "Semua_Laporan_PNBP.zip")
-        with zipfile.ZipFile(zip_path, "w") as zipf:
-            zipf.write(excel_path, arcname="Laporan_Prediksi_PNBP.xlsx")
-            for fmt in images:
-                zipf.write(os.path.join(tmpdir, f"Grafik_Prediksi_PNBP.{fmt}"),
-                           arcname=f"Grafik_Prediksi_PNBP.{fmt}")
-
-        with open(zip_path, "rb") as f:
-            return f.read()
-
 def export_report_page():
     st.title("📥 Export & Report Generator")
 
