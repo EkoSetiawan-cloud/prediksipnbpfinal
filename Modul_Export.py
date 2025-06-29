@@ -94,17 +94,17 @@ def export_report_page():
     """, unsafe_allow_html=True)
 
     if st.button("🖨️ Mode Cetak PDF Bersih"):
-    components.html(
-        """
-        <script>
-        window.onload = function() {
-            window.print();
-        }
-        </script>
-        """,
-        height=0,
-        width=0
-    )
+        components.html(
+            """
+            <script>
+            window.onload = function() {
+                window.print();
+            }
+            </script>
+            """,
+            height=0,
+            width=0
+        )
 
     if not all(key in st.session_state for key in ["dataset_pnbp", "pnbp_total_tahunan", "prediksi_pnbp"]):
         st.warning("⚠️ Dataset belum lengkap. Jalankan semua modul terlebih dahulu.")
