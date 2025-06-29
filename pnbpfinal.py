@@ -17,11 +17,8 @@ if not login_page():
     st.stop()
 
 # Navigasi Aplikasi
-st.markdown("<h2 style='text-align: center;'>📊 Navigasi Aplikasi</h2>", unsafe_allow_html=True)
-
-menu = st.radio(
-    "Pilih Modul:",
-    [
+st.sidebar.title("📊 Navigasi Aplikasi")
+menu = st.sidebar.radio("Pilih Modul", [
         "1. Modul Input",
         "2. Preprocessing & Agregasi",
         "3. Prediksi Model",
