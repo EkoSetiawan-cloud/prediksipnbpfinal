@@ -22,10 +22,19 @@ def prediksi_pnbp_page():
     st.subheader("\U0001F9E0 Metode Prediksi yang Digunakan")
     st.markdown("""
     Aplikasi ini menggunakan metode **Double Exponential Smoothing (Holt’s Method)** untuk memprediksi total PNBP tahunan.
-    
-    **🔹 Double Exponential Smoothing (Holt’s Method)**  
-    Model ini memprediksi data dengan tren linier. Digunakan dua komponen: _level_ dan _trend_, dengan rumus:
 
+    ### 🧠 Alasan Pemilihan
+    Model ini sangat cocok untuk data PNBP karena:
+    - Memiliki tren linier tahunan yang konsisten
+    - Tidak menunjukkan pola musiman yang kompleks
+    - Diperlukan model yang cepat, stabil, dan mudah dijelaskan
+
+    ### ⚙️ Cara Kerja Model
+    Double exponential smoothing menggunakan dua komponen utama:
+    - **Level (L_t)**: estimasi nilai saat ini
+    - **Trend (T_t)**: estimasi arah perubahan
+
+    Rumus:
     $$
     \begin{aligned}
     L_t &= \alpha y_t + (1 - \alpha)(L_{t-1} + T_{t-1}) \\
@@ -34,8 +43,19 @@ def prediksi_pnbp_page():
     \end{aligned}
     $$
 
-    - Cocok untuk data tren jangka pendek.
-    - Tidak menangani musiman.
+    ### ✅ Keunggulan
+    - Cepat dan efisien
+    - Sederhana untuk interpretasi dan visualisasi
+    - Cocok untuk data dengan tren linier
+
+    ### ⚠️ Keterbatasan
+    - Tidak bisa menangani musiman
+    - Kurang fleksibel jika tren berubah drastis
+
+    ### 📚 Dukungan Ilmiah
+    - Dikembangkan oleh Charles Holt (1957) dan disempurnakan oleh Winters
+    - Digunakan luas dalam ekonomi, industri, dan bisnis ([Penn State Online](https://online.stat.psu.edu/stat501/lesson/6/6.2))
+    - Validasi empiris oleh berbagai studi time series forecasting
     """)
 
     # Double Smoothing Prediction
