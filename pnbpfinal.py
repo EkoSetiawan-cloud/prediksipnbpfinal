@@ -18,7 +18,7 @@ if not login_page():
     st.stop()
 
 # Navigasi Aplikasi
-st.sidebar.title("\U0001F4CA Aplikasi Prediksi PNBP DJID")
+st.markdown("<h1 style='color:#bf00ff;'>📊 Aplikasi Prediksi PNBP DJID</h1>", unsafe_allow_html=True)
 menu = st.sidebar.radio("Pilih Modul", [
         "1. Modul Input",
         "2. Preprocessing & Agregasi",
