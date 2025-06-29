@@ -4,6 +4,7 @@ import io
 import os
 import zipfile
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
 import tempfile
 
 def convert_df_to_excel(df_dict):
@@ -25,19 +26,21 @@ def export_graphs_as_images(df_pred):
     hist = df_pred[df_pred["Jenis Tahun"] == "Historis"]
     pred = df_pred[df_pred["Jenis Tahun"] == "Prediksi"]
 
-    ax.plot(hist["Tahun"], hist["Aktual"], marker="o", label="Aktual", linewidth=2)
-    ax.plot(hist["Tahun"], hist["Prediksi"], marker="o", linestyle="--", label="Prediksi (Historis)", linewidth=2)
-    ax.plot(pred["Tahun"], pred["Prediksi"], marker="s", linestyle="--", label="Prediksi (Masa Depan)", linewidth=2)
+    scale = 1e12  # Triliun
+    ax.plot(hist["Tahun"], hist["Aktual"] / scale, marker="o", label="Aktual", linewidth=2)
+    ax.plot(hist["Tahun"], hist["Prediksi"] / scale, marker="o", linestyle="--", label="Prediksi (Historis)", linewidth=2)
+    ax.plot(pred["Tahun"], pred["Prediksi"] / scale, marker="s", linestyle="--", label="Prediksi (Masa Depan)", linewidth=2)
 
     ax.set_title("Grafik Prediksi PNBP")
     ax.set_xlabel("Tahun")
-    ax.set_ylabel("Nominal PNBP")
+    ax.set_ylabel("Nominal PNBP (Rp Triliun)")
     ax.grid(True)
     ax.legend()
+    ax.yaxis.set_major_formatter(mtick.FormatStrFormatter('%.0f T'))
 
     for fmt in ["png", "pdf", "svg"]:
         buf = io.BytesIO()
-        fig.savefig(buf, format=fmt)
+        fig.savefig(buf, format=fmt, dpi=300)
         buf.seek(0)
         output_files[fmt] = buf
 
