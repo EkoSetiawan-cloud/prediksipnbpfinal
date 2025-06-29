@@ -10,6 +10,7 @@ from modul_preprocessing_agregasi import preprocessing_agregasi_page
 from Modul_Prediksi import prediksi_pnbp_page
 from Modul_Visualisasi import visualisasi_prediksi_page
 from Modul_Evaluasi import evaluasi_model_page
+from Modul_Kesimpulan_&_Analisa import kesimpulan_analisa_page
 from Modul_Export import export_report_page
 
 # Jalankan Login
@@ -24,7 +25,8 @@ menu = st.sidebar.radio("Pilih Modul", [
         "3. Prediksi Model",
         "4. Visualisasi",
         "5. Evaluasi",
-        "6. Export & Report Generator"
+        "6. Kesimpulan & Analisa",
+        "7. Export & Report Generator"
     ],
     index=0
 )
@@ -45,6 +47,9 @@ elif menu == "4. Visualisasi":
 elif menu == "5. Evaluasi":
     from Modul_Evaluasi import evaluasi_model_page
     evaluasi_model_page()
-elif menu == "6. Export & Report Generator":
+elif menu == "6. Kesimpulan & Analisa":
+    from Modul_Kesimpulan_Analisa import kesimpulan_analisa_page
+    kesimpulan_analisa_page()
+elif menu == "7. Export & Report Generator":
     from Modul_Export import export_report_page
     export_report_page()
