@@ -26,11 +26,20 @@ def prediksi_pnbp_page():
     train['Prediksi'] = np.nan
 
     for i in range(len(train) - forecast_horizon):
-        train_data = train.iloc[:i + forecast_horizon]['Total PNBP']
+    train_data = train.iloc[:i + forecast_horizon]['Total PNBP']
+    
+    # Minimal data agar model bisa dilatih (misalnya 5 titik)
+    if len(train_data) < 5:
+        continue
+
+    try:
         model = ARIMA(train_data, order=(1, 1, 1))
         model_fit = model.fit()
         pred = model_fit.forecast()[0]
         train.loc[i + forecast_horizon, 'Prediksi'] = pred
+    except Exception as e:
+        st.warning(f"Model gagal di iterasi ke-{i}: {e}")
+        continue
 
     # Simpan hasil prediksi historis
     df_prediksi = train.copy()
