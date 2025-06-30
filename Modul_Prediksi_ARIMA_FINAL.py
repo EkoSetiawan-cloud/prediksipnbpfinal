@@ -63,8 +63,11 @@ def prediksi_pnbp_page():
         return f"Rp {x:,.0f}".replace(",", ".") if pd.notnull(x) else "-"
 
     df_display = df_final.copy()
-    df_display["Aktual"] = df_display["Aktual"].apply(format_rupiah)
-    df_display["Prediksi"] = df_display["Prediksi"].apply(format_rupiah)
+
+# Format hanya jika nilai tersedia
+df_display["Aktual"] = df_display["Aktual"].apply(lambda x: f"Rp {x:,.0f}".replace(",", ".") if pd.notnull(x) else "-")
+df_display["Prediksi"] = df_display["Prediksi"].apply(lambda x: f"Rp {x:,.0f}".replace(",", ".") if pd.notnull(x) else "-")
+
 
     st.subheader("📄 Hasil Prediksi ARIMA")
     st.caption("Tabel berikut menampilkan nilai aktual dan hasil proyeksi 2 tahun ke depan.")
