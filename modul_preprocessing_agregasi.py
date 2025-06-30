@@ -39,7 +39,7 @@ def preprocessing_agregasi_page():
     df_transposed["total_pnbp"] = df_transposed[nominal_cols].sum(axis=1)
     df_total_per_tahun = df_transposed[["tahun", "total_pnbp"]]
 
-    # Format rupiah untuk ditampilkan
+    # Tampilkan hanya versi format rupiah (untuk UI)
     def format_rupiah(x):
         return f"Rp {x:,.0f}".replace(",", ".") if pd.notnull(x) else "-"
 
@@ -50,11 +50,8 @@ def preprocessing_agregasi_page():
     st.caption("Total kumulatif dari semua jenis PNBP untuk setiap tahun.")
     st.dataframe(df_display, use_container_width=True)
 
-    # Simpan DataFrame untuk prediksi Holt's (lama)
+    # Simpan ke session untuk Holt dan ARIMA
     st.session_state["pnbp_total_tahunan"] = df_total_per_tahun
+    st.session_state["pnbp_series_arima"] = df_total_per_tahun.set_index("tahun")["total_pnbp"]
 
-    # Simpan Series siap ARIMA
-    series_arima = df_total_per_tahun.set_index("tahun")["total_pnbp"]
-    st.session_state["pnbp_series_arima"] = series_arima
-
-    st.success("✅ Data berhasil diproses dan disiapkan untuk model Holt dan ARIMA.")
+    st.success("✅ Data berhasil diproses dan disimpan untuk digunakan pada modul selanjutnya.")
