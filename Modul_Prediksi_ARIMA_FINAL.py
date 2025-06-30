@@ -49,24 +49,23 @@ def prediksi_pnbp_page():
     
     forecast = model_fit.forecast(steps=tahun_forecast)
     
-    # Buat DataFrame untuk data historis
-    df_actual = pd.DataFrame({
-        "Tahun": series.index,
-        "Aktual": series.values,
-        "Prediksi": np.nan,
-        "Jenis Tahun": "Historis"
-    })
+    # Debug: Cek nilai forecast
+    st.write("Debug - Forecast values:", forecast.values)
+    st.write("Debug - Forecast years:", forecast_years)
     
-    # Buat DataFrame untuk prediksi
-    df_forecast = pd.DataFrame({
-        "Tahun": forecast_years,
-        "Aktual": np.nan,
-        "Prediksi": forecast.values,
-        "Jenis Tahun": "Prediksi"
-    })
+    # Buat list untuk menampung semua data
+    all_years = list(series.index) + forecast_years
+    all_actual = list(series.values) + [None] * len(forecast_years)
+    all_prediksi = [None] * len(series) + list(forecast.values)
+    all_jenis = ["Historis"] * len(series) + ["Prediksi"] * len(forecast_years)
     
-    # Gabungkan data historis dan prediksi
-    df_final = pd.concat([df_actual, df_forecast], ignore_index=True)
+    # Buat DataFrame final
+    df_final = pd.DataFrame({
+        "Tahun": all_years,
+        "Aktual": all_actual,
+        "Prediksi": all_prediksi,
+        "Jenis Tahun": all_jenis
+    })
     
     # Simpan ke session state
     st.session_state["prediksi_pnbp"] = df_final.copy()
@@ -76,12 +75,12 @@ def prediksi_pnbp_page():
     
     # Format kolom Aktual
     df_display["Aktual"] = df_display["Aktual"].apply(
-        lambda x: f"Rp {x:,.0f}".replace(",", ".") if pd.notnull(x) else "-"
+        lambda x: f"Rp {x:,.0f}".replace(",", ".") if x is not None and pd.notnull(x) else "-"
     )
     
     # Format kolom Prediksi
     df_display["Prediksi"] = df_display["Prediksi"].apply(
-        lambda x: f"Rp {x:,.0f}".replace(",", ".") if pd.notnull(x) else "-"
+        lambda x: f"Rp {x:,.0f}".replace(",", ".") if x is not None and pd.notnull(x) else "-"
     )
     
     st.subheader("📄 Hasil Prediksi ARIMA")
@@ -93,7 +92,8 @@ def prediksi_pnbp_page():
     # Tampilkan ringkasan prediksi
     st.subheader("🎯 Ringkasan Prediksi")
     for i, year in enumerate(forecast_years):
-        formatted_value = f"Rp {forecast.iloc[i]:,.0f}".replace(",", ".")
-        st.markdown(f"- **Tahun {year}**: {formatted_value}")
+        if i < len(forecast.values):
+            formatted_value = f"Rp {forecast.values[i]:,.0f}".replace(",", ".")
+            st.markdown(f"- **Tahun {year}**: {formatted_value}")
     
     st.info("ℹ️ Lanjutkan ke menu **Visualisasi** dan **Evaluasi** untuk analisis lanjut.")
