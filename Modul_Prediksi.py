@@ -1,72 +1,77 @@
-import pandas as pd
 import streamlit as st
-from statsmodels.tsa.arima.model import ARIMA
-from sklearn.metrics import mean_absolute_error, mean_squared_error
+import pandas as pd
 import numpy as np
-
+from statsmodels.tsa.arima.model import ARIMA
+from statsmodels.tsa.stattools import adfuller
 
 def prediksi_pnbp_page():
-    st.title("📈 Prediksi PNBP dengan ARIMA Rolling Forecast")
+    st.markdown("<h1 style='color:#3C8DBC;'>📈 Model Prediksi PNBP - ARIMA</h1>", unsafe_allow_html=True)
 
-    if "pnbp_total_tahunan" not in st.session_state:
-        st.warning("Silakan jalankan modul preprocessing terlebih dahulu.")
+    if "pnbp_series_arima" not in st.session_state:
+        st.warning("⚠️ Data belum tersedia. Jalankan modul preprocessing terlebih dahulu.")
         return
 
-    df = st.session_state.pnbp_total_tahunan.copy()
-    df = df.sort_values("Tahun")
+    series = st.session_state["pnbp_series_arima"].copy()
+    st.subheader("📊 Data Siap ARIMA")
+    st.line_chart(series)
 
-    st.subheader("🧠 Alasan Pemilihan ARIMA Rolling Forecast")
-    st.markdown("""
-    ARIMA efektif untuk menangkap pola tren historis dengan pendekatan diferensiasi. Dengan rolling forecast, model diperbarui secara berkelanjutan.
+    st.subheader("🧪 Uji Stasioneritas (ADF Test)")
+    adf_result = adfuller(series)
+    st.markdown(f"""
+    - **ADF Statistic**: `{adf_result[0]:.4f}`
+    - **p-value**: `{adf_result[1]:.4f}`
     """)
+    if adf_result[1] <= 0.05:
+        st.success("✅ Data sudah stasioner (p ≤ 0.05)")
+        d = 0
+    else:
+        st.warning("⚠️ Data belum stasioner (p > 0.05). Differencing akan diterapkan.")
+        d = 1
 
-    # Parameter
-    forecast_horizon = 2  # Tahun yang ingin diprediksi
-    train = df.copy()
-    train['Prediksi'] = np.nan
+    st.subheader("⚙️ Pemilihan Parameter ARIMA(p,d,q)")
+    st.markdown("Untuk percobaan awal, digunakan nilai `(p=1, d=1, q=1)` secara default. Diimplementasikan secara manual tanpa auto_tuning.")
+    p, q = 1, 1
 
-    for i in range(len(train) - forecast_horizon):
-    train_data = train.iloc[:i + forecast_horizon]['Total PNBP']
-    
-    # Minimal data agar model bisa dilatih (misalnya 5 titik)
-    if len(train_data) < 5:
-        continue
+    st.info(f"Model ARIMA({p},{d},{q}) sedang dilatih...")
 
-    try:
-        model = ARIMA(train_data, order=(1, 1, 1))
-        model_fit = model.fit()
-        pred = model_fit.forecast()[0]
-        train.loc[i + forecast_horizon, 'Prediksi'] = pred
-    except Exception as e:
-        st.warning(f"Model gagal di iterasi ke-{i}: {e}")
-        continue
-
-    # Simpan hasil prediksi historis
-    df_prediksi = train.copy()
-    df_prediksi['Aktual'] = df_prediksi['Total PNBP']
-    df_prediksi = df_prediksi[['Tahun', 'Aktual', 'Prediksi']]
-
-    # Prediksi masa depan (1 langkah ke depan)
-    future_year = df_prediksi['Tahun'].max() + 1
-    model = ARIMA(df['Total PNBP'], order=(1, 1, 1))
+    # Fit model
+    model = ARIMA(series, order=(p, d, q))
     model_fit = model.fit()
-    future_pred = model_fit.forecast()[0]
-    df_future = pd.DataFrame({
-        'Tahun': [future_year],
-        'Aktual': [None],
-        'Prediksi': [future_pred]
-    })
+    st.success("✅ Model ARIMA berhasil dilatih.")
 
-    df_prediksi = pd.concat([df_prediksi, df_future], ignore_index=True)
-    df_prediksi['Jenis Tahun'] = df_prediksi['Aktual'].apply(lambda x: "Historis" if pd.notnull(x) else "Prediksi")
+    st.subheader("📈 Ringkasan Model")
+    st.text(model_fit.summary())
 
-    st.success("✅ Prediksi berhasil dilakukan dengan ARIMA Rolling Forecast.")
+    # Prediksi
+    tahun_max = series.index.max()
+    tahun_forecast = 2
+    forecast_years = list(range(tahun_max + 1, tahun_max + tahun_forecast + 1))
 
-    st.subheader("📄 Hasil Prediksi")
-    st.write("Tabel berikut menampilkan nilai aktual dan hasil proyeksi.")
-    st.dataframe(df_prediksi)
+    forecast = model_fit.forecast(steps=tahun_forecast)
+    forecast.index = forecast_years
 
-    # Simpan ke session state
-    st.session_state.prediksi_pnbp = df_prediksi
+    # Gabung hasil aktual & prediksi
+    df_actual = series.reset_index()
+    df_actual.columns = ["Tahun", "Aktual"]
 
-    st.info("➡️ Lanjutkan ke menu Visualisasi untuk melihat grafik interaktif hasil prediksi.")
+    df_forecast = forecast.reset_index()
+    df_forecast.columns = ["Tahun", "Prediksi"]
+
+    df_final = pd.merge(df_actual, df_forecast, on="Tahun", how="outer")
+    df_final["Jenis Tahun"] = df_final["Aktual"].apply(lambda x: "Historis" if pd.notnull(x) else "Prediksi")
+
+    st.session_state["prediksi_pnbp"] = df_final.copy()
+
+    # Tampilkan tabel
+    def format_rupiah(x):
+        return f"Rp {x:,.0f}".replace(",", ".") if pd.notnull(x) else "-"
+
+    df_display = df_final.copy()
+    df_display["Aktual"] = df_display["Aktual"].apply(format_rupiah)
+    df_display["Prediksi"] = df_display["Prediksi"].apply(format_rupiah)
+
+    st.subheader("📄 Hasil Prediksi ARIMA")
+    st.caption("Tabel berikut menampilkan nilai aktual dan hasil proyeksi 2 tahun ke depan.")
+    st.dataframe(df_display, use_container_width=True)
+
+    st.info("ℹ️ Lanjutkan ke menu **Visualisasi** dan **Evaluasi** untuk analisis lanjut.")
