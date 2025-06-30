@@ -3,40 +3,40 @@ import pandas as pd
 import numpy as np
 from statsmodels.tsa.arima.model import ARIMA
 from statsmodels.tsa.stattools import adfuller
-st.write("Session keys:", list(st.session_state.keys()))
-st.write("Apakah 'pnbp_series_arima' tersedia?", "pnbp_series_arima" in st.session_state)
 
 def prediksi_pnbp_page():
     st.markdown("<h1 style='color:#3C8DBC;'>📈 Model Prediksi PNBP - ARIMA</h1>", unsafe_allow_html=True)
 
+    # Cek ketersediaan data
     if "pnbp_series_arima" not in st.session_state:
         st.warning("⚠️ Data belum tersedia. Jalankan modul preprocessing terlebih dahulu.")
         return
 
     series = st.session_state["pnbp_series_arima"].copy()
+
     st.subheader("📊 Data Siap ARIMA")
     st.line_chart(series)
 
+    # Uji stasioneritas
     st.subheader("🧪 Uji Stasioneritas (ADF Test)")
     adf_result = adfuller(series)
-    st.markdown(f"""
-    - **ADF Statistic**: `{adf_result[0]:.4f}`
-    - **p-value**: `{adf_result[1]:.4f}`
-    """)
-    if adf_result[1] <= 0.05:
+    adf_stat = adf_result[0]
+    adf_pvalue = adf_result[1]
+
+    st.markdown(f"- **ADF Statistic**: `{adf_stat:.4f}`")
+    st.markdown(f"- **p-value**: `{adf_pvalue:.4f}`")
+    if adf_pvalue <= 0.05:
         st.success("✅ Data sudah stasioner (p ≤ 0.05)")
         d = 0
     else:
-        st.warning("⚠️ Data belum stasioner (p > 0.05). Differencing akan diterapkan.")
+        st.warning("⚠️ Data belum stasioner. Akan diterapkan differencing (d=1).")
         d = 1
 
-    st.subheader("⚙️ Pemilihan Parameter ARIMA(p,d,q)")
-    st.markdown("Untuk percobaan awal, digunakan nilai `(p=1, d=1, q=1)` secara default. Diimplementasikan secara manual tanpa auto_tuning.")
+    # Tentukan parameter ARIMA
     p, q = 1, 1
+    st.markdown(f"📌 Menggunakan parameter: **ARIMA({p}, {d}, {q})**")
 
-    st.info(f"Model ARIMA({p},{d},{q}) sedang dilatih...")
-
-    # Fit model
+    # Fit ARIMA
     model = ARIMA(series, order=(p, d, q))
     model_fit = model.fit()
     st.success("✅ Model ARIMA berhasil dilatih.")
@@ -44,15 +44,14 @@ def prediksi_pnbp_page():
     st.subheader("📈 Ringkasan Model")
     st.text(model_fit.summary())
 
-    # Prediksi
-    tahun_max = series.index.max()
+    # Prediksi 2 tahun ke depan
+    tahun_akhir = series.index.max()
     tahun_forecast = 2
-    forecast_years = list(range(tahun_max + 1, tahun_max + tahun_forecast + 1))
-
+    forecast_years = list(range(tahun_akhir + 1, tahun_akhir + tahun_forecast + 1))
     forecast = model_fit.forecast(steps=tahun_forecast)
     forecast.index = forecast_years
 
-    # Gabung hasil aktual & prediksi
+    # Gabungkan dengan data historis
     df_actual = series.reset_index()
     df_actual.columns = ["Tahun", "Aktual"]
 
@@ -62,9 +61,10 @@ def prediksi_pnbp_page():
     df_final = pd.merge(df_actual, df_forecast, on="Tahun", how="outer")
     df_final["Jenis Tahun"] = df_final["Aktual"].apply(lambda x: "Historis" if pd.notnull(x) else "Prediksi")
 
+    # Simpan ke session state
     st.session_state["prediksi_pnbp"] = df_final.copy()
 
-    # Tampilkan tabel
+    # Format rupiah untuk tampilan
     def format_rupiah(x):
         return f"Rp {x:,.0f}".replace(",", ".") if pd.notnull(x) else "-"
 
