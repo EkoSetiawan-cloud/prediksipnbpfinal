@@ -7,7 +7,7 @@ st.set_page_config(page_title="Prediksi PNBP", layout="wide")
 from login import login_page  
 from Modul_Upload_Dataset import upload_dataset_page
 from modul_preprocessing_agregasi import preprocessing_agregasi_page
-from Modul_Prediksi import prediksi_pnbp_page
+from Modul_Prediksi_ARIMA_FINAL import prediksi_pnbp_page
 from Modul_Visualisasi import visualisasi_prediksi_page
 from Modul_Evaluasi import evaluasi_model_page
 from modul_analisa_final import kesimpulan_analisa_page
