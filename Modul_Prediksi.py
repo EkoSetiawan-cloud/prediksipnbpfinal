@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 from statsmodels.tsa.arima.model import ARIMA
 from statsmodels.tsa.stattools import adfuller
+st.write("Session keys:", list(st.session_state.keys()))
+st.write("Apakah 'pnbp_series_arima' tersedia?", "pnbp_series_arima" in st.session_state)
 
 def prediksi_pnbp_page():
     st.markdown("<h1 style='color:#3C8DBC;'>📈 Model Prediksi PNBP - ARIMA</h1>", unsafe_allow_html=True)
