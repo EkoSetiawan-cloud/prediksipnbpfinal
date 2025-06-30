@@ -49,10 +49,12 @@ def prediksi_pnbp_page():
     df_actual = series.reset_index()
     df_actual.columns = ["Tahun", "Aktual"]
 
-    df_forecast = forecast.reset_index()
-    df_forecast.columns = ["Tahun", "Prediksi"]
+    df_forecast = pd.DataFrame({
+        "Tahun": forecast_years,
+        "Prediksi": forecast.values
+    })
 
-    df_final = pd.merge(df_actual, df_forecast, on="Tahun", how="outer")
+    df_final = pd.concat([df_actual, df_forecast], ignore_index=True)
     df_final["Jenis Tahun"] = df_final["Aktual"].apply(lambda x: "Historis" if pd.notnull(x) else "Prediksi")
 
     st.session_state["prediksi_pnbp"] = df_final.copy()
